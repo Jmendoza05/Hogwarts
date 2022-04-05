@@ -1,0 +1,48 @@
+<div class="container mt-5">
+  <div class="row">
+      <div class="col-lg-12">
+            <div class="col-lg-4 mt-0">
+              <form  [formGroup]="personajesForm"> 
+                <div class="row g-3 align-items-center">
+                  <div class="col-auto">
+                    <label for="inputPassword6" class="col-form-label labeltext fw-bolder">Select an house</label>
+                  </div>
+                  <div class="col-auto">
+                    <select  class="form-select" formControlName="home" 
+                        aria-label="Default select example"
+                        [(ngModel)]="homeSelect"
+                        (change)="getPersonajes()">
+                  <option class="fw-bolder" *ngFor="let option of listOptions" value="{{option}}">{{option | uppercase}}</option>                  
+                </select>
+                  </div>
+                  </div>                 
+              </form>
+            </div>
+            <div class="card mt-3">
+                <div class="card-body text-center">
+                    <table class="table table-striped mt-3">
+                        <thead>
+                          <tr>
+                          <th scope="col">NAME</th>
+                          <th scope="col">PATRONUS</th>
+                          <th scope="col">AGE</th>
+                          <th scope="col">IMAGE</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let personaje of listpersonajes | filter:page_number:searchCharacters" >
+                            <td class="table-info fw-bolder">{{personaje.name}}</td>
+                          <td class="table-info fw-bolder">{{personaje.patronus}}</td>
+                          <td class="table-info fw-bolder">{{personaje.yearOfBirth}}</td>
+                          <td class="table-info fw-bolder"><img src="{{personaje.image}}" *ngIf="personaje.image !==''" class="rounded-circle img" /></td>
+                          </tr>                          
+                        </tbody>
+                      </table>
+                      <button class="btn float-end" (click)="nextPage()" [disabled]="(listpersonajes | filter:page_number:searchCharacters).length === 0"><i class="fa-solid fa-circle-chevron-right"></i></button>
+                    
+                    <button class="btn float-end" (click)="prevPage()"><i class="fa-solid fa-circle-chevron-left"></i></button>
+                    <h5 style="text-align: center; margin-top:10px;" *ngIf="listpersonajes.length === 0">
+                        There are no selected characters to show. Select an house</h5>
+            </div>
+            </div>
+            </div>

@@ -1,0 +1,124 @@
+<div class="container mt-2">
+          <div class="card mt-0">
+              <div class="card-body text-center">
+                <input type="text"
+                        class="form-control mb-2 col"
+                        placeholder="Search student"
+                        [(ngModel)]="searchStudent"/>
+                    <button class="btn btn-primary float-end fw-bolder" data-bs-toggle="modal" 
+                            data-bs-target="#exampleModal"> ADD STUDENT  
+                            <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                    <table  *ngIf="listStudents.length > 0" class="table table-striped mt-3">
+                      <thead class="text-center">
+                        <tr>                            
+                          <th scope="col-2">NAME</th>
+                          <th scope="col-2">PATRONUS</th>
+                          <th scope="col-2">AGE</th>
+                          <th scope="col-2">IMAGE</th>
+                          </tr>
+                      </thead>
+                      <tbody class="text-center">
+                        <tr *ngFor="let student of listStudents | filter:page_number:searchStudent"
+                        [ngStyle]="{'height':'50px'}">
+                          <td class="table-info">{{student.name}}</td>
+                          <td class="table-info">{{student.patronus}}</td>
+                          <td class="table-info">{{student.yearOfBirth}}</td>
+                          <td class="table-info"><img src="{{student.image}}" *ngIf="student.image !==''" class="rounded-circle img" /></td>
+                      </tr>                      
+                      </tbody>
+                    </table>
+                    
+                    <hr>
+                    <button class="btn float-end" (click)="nextPage()" [disabled]="(listStudents | filter:page_number:searchStudent).length === 0"><i class="fa-solid fa-circle-chevron-right"></i></button>
+                    
+                    <button class="btn float-end" (click)="prevPage()"><i class="fa-solid fa-circle-chevron-left"></i></button>
+                    <h5 style="text-align: center; margin-top:10px;" *ngIf="(listStudents | filter:page_number:searchStudent).length === 0">There are no Student to show</h5>
+            </div>
+            </div>
+            </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bolder" id="exampleModalLabel">CREATE STUDENTS</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form
+            [formGroup]="studentForm"
+            (ngSubmit)="crearStudent()"
+            >
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label fw-bolder">Name</label>
+                  <input type="text" class="form-control" formControlName="name">
+                  <div
+                class="text-danger"
+                *ngIf="
+                studentForm.get('name')?.hasError('required') &&
+                studentForm.get('name')?.touched
+                "
+              >
+                <span
+                  >The name field is<strong> required</strong></span
+                >
+              </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label fw-bolder">Patronus</label>
+                    <input type="text" class="form-control" formControlName="patronus">
+                    <div
+                class="text-danger"
+                *ngIf="
+                studentForm.get('patronus')?.hasError('required') &&
+                studentForm.get('patronus')?.touched
+                "
+              >
+                <span
+                  >The patronus field is<strong> required</strong></span
+                >
+              </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label fw-bolder">Year Of Birth</label>
+                    <input type="number" class="form-control" formControlName="yearOfBirth">
+                    <div
+                class="text-danger"
+                *ngIf="
+                studentForm.get('yearOfBirth')?.hasError('required') &&
+                studentForm.get('yearOfBirth')?.touched
+                "
+              >
+                <span
+                  >The yearOfBirth field is<strong> required</strong></span
+                >
+              </div>
+                </div>
+                <div class="mb-3">
+                  <label for="formFileMultiple" class="form-label fw-bolder">Select a Image</label>
+                  <input class="form-control" type="file" formControlName="img" multiple>
+                  <div
+                class="text-danger"
+                *ngIf="
+                studentForm.get('img')?.hasError('required') &&
+                studentForm.get('img')?.touched
+                "
+              >
+                <span
+                  >The image field is<strong> required</strong></span
+                >
+              </div>
+                </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success fw-bolder" 
+                          data-bs-dismiss="modal"
+                          [disabled]="studentForm.invalid">
+                              CREATE STUDENT
+                      </button>
+                  </div>
+                </form>
+        </div>        
+      </div>
+    </div>
+  </div>
